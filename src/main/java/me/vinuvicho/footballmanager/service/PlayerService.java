@@ -36,9 +36,16 @@ public class PlayerService {
     }
 
     public List<Player> findAllPlayers() {
-        return playerRepo.findAll();
+        List<Player> players = playerRepo.findAll();
+        for (Player p : players) {
+            if (p.getTeamName() == null) p.setTransferCost(0L);
+            else p.setTransferCost(calculateTransferCost
+                    (p, teamRepo.getTeamByName(p.getTeamName()).get().getCommission()));
+        }
+        return players;
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public Player updatePlayer(Player player) {
         Player databasePlayer = playerRepo.getPlayerById(player.getId());
         if (Objects.equals(databasePlayer.getTeamName(), player.getTeamName())) {   //team not changed
@@ -75,6 +82,8 @@ public class PlayerService {
         return player;
     }
 
+
+
     public Long calculateTransferCost(Player player, Long teamCommission) {
         long experience = ChronoUnit.MONTHS.between(player.getCareerStarted(), LocalDate.now());
         long transferCost = experience * 100000 / player.getAge();
@@ -82,11 +91,18 @@ public class PlayerService {
     }
 
     public Player findPlayerById(Long id) {
-        return playerRepo.findById(id).orElseThrow(() -> new PlayerNotFoundException("No Player found"));
+        Player player = playerRepo.findById(id).orElseThrow(() -> new PlayerNotFoundException("No Player found"));
+        player.setTransferCost((player.getTeamName() == null) ? 0 :
+                calculateTransferCost(player, teamRepo.getTeamByName(player.getTeamName()).get().getCommission()));
+        return player;
     }
 
     public void deletePlayer(Long id) {
         playerRepo.deletePlayerFromAnyTeam(id);
         playerRepo.deleteById(id);
+    }
+
+    public List<Player> getTeamPlayers(Long id) {
+        return playerRepo.getPlayersByTeamName(teamRepo.getTeamById(id).get().getName());
     }
 }

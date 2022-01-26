@@ -1,7 +1,9 @@
 package me.vinuvicho.footballmanager.controller;
 
 import lombok.AllArgsConstructor;
+import me.vinuvicho.footballmanager.entity.Player;
 import me.vinuvicho.footballmanager.entity.Team;
+import me.vinuvicho.footballmanager.service.PlayerService;
 import me.vinuvicho.footballmanager.service.TeamService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import java.util.List;
 @RequestMapping("/team")
 public class TeamController {
     private final TeamService teamService;
+    private PlayerService playerService;
 
     @GetMapping("/all")
     public ResponseEntity<List<Team>> getAllTeams() {
@@ -25,6 +28,12 @@ public class TeamController {
     public ResponseEntity<Team> getTeamById(@PathVariable("teamId") Long id) {
         Team team = teamService.findTeamById(id);
         return new ResponseEntity<>(team, HttpStatus.OK);
+    }
+
+    @GetMapping("/{teamId}/players")
+    public ResponseEntity<List<Player>> getTeamPlayers(@PathVariable("teamId") Long id) {
+        List<Player> players = playerService.getTeamPlayers(id);
+        return new ResponseEntity<>(players, HttpStatus.OK);
     }
 
     @PostMapping("/new")
