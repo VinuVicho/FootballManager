@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/footballManager
+    username: postgres
+    password: 11111111
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        format_sql: true
+#        show-sql: true
+
+    open-in-view: false                     #to remove warning, prob will cause error with db in future
