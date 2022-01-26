@@ -44,7 +44,7 @@ public class PlayerService {
         if (Objects.equals(databasePlayer.getTeamName(), player.getTeamName())) {   //team not changed
             return playerRepo.save(player);
         }
-        if (player.getTeamName() == null) {             //remove team
+        if (player.getTeamName() == null) {                                         //remove team
             Team transferFrom = teamRepo.getTeamByName(databasePlayer.getTeamName()).get();
             List<Player> players = transferFrom.getPlayers();
             players.removeIf(p -> p.getId() == databasePlayer.getId());
