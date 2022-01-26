@@ -4,15 +4,18 @@ import lombok.AllArgsConstructor;
 import me.vinuvicho.footballmanager.entity.Player;
 import me.vinuvicho.footballmanager.entity.Team;
 import me.vinuvicho.footballmanager.exeption.TeamNotFoundException;
+import me.vinuvicho.footballmanager.repository.PlayerRepo;
 import me.vinuvicho.footballmanager.repository.TeamRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class TeamService {
     private final TeamRepo teamRepo;
+    private final PlayerRepo playerRepo;
 
     public Team addTeam(Team team) {
         //TODO: validate
@@ -31,7 +34,12 @@ public class TeamService {
         return teamRepo.getTeamById(id).orElseThrow(() -> new TeamNotFoundException("No Team found"));
     }
 
+    @SuppressWarnings("StringOperationCanBeSimplified")
     public void deleteTeam(Long id) {
+        Team team = teamRepo.getTeamById(id).orElseThrow(() -> new TeamNotFoundException("team doesnt exist"));
+        List<Player> players = team.getPlayers();
+        for (Player p: players) p.setTeamName(new String());
+        playerRepo.saveAll(players);
         teamRepo.deleteById(id);
     }
 }

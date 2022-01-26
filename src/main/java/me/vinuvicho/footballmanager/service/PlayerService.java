@@ -45,15 +45,11 @@ public class PlayerService {
             return playerRepo.save(player);
         }
         if (player.getTeamName() == null) {                                         //remove team
-            Team transferFrom = teamRepo.getTeamByName(databasePlayer.getTeamName()).get();
-            List<Player> players = transferFrom.getPlayers();
-            players.removeIf(p -> p.getId() == databasePlayer.getId());
-            transferFrom.setPlayers(players);
-            teamRepo.save(transferFrom);
+            playerRepo.deletePlayerFromAnyTeam(player.getId());
             return playerRepo.save(player);
         }
         Team transferTo = teamRepo.getTeamByName(player.getTeamName())
-                .orElseThrow(() -> new TeamNotFoundException("Cannot transfer to unexciting team"));
+                .orElseThrow(() -> new TeamNotFoundException("Cannot transfer to team, that doesnt exist"));
         if (databasePlayer.getTeamName() != null) {                                 //team changed
             Team transferFrom = teamRepo.getTeamByName(databasePlayer.getTeamName()).get();
             Long transferCost = calculateTransferCost(databasePlayer, transferFrom.getCommission());
@@ -61,14 +57,13 @@ public class PlayerService {
 
             transferTo.setMoney(transferTo.getMoney() - transferCost);
             transferFrom.setMoney(transferFrom.getMoney() + transferCost);
-            playerRepo.save(player);
-            List<Player> players = transferFrom.getPlayers();
-            players.removeIf(p -> p.getId() == databasePlayer.getId());
-            transferFrom.setPlayers(players);
-            teamRepo.save(transferFrom);
-            players = transferTo.getPlayers();
+
+            List<Player> players = transferTo.getPlayers();
             players.add(player);
             transferTo.setPlayers(players);
+            playerRepo.save(player);
+            teamRepo.save(transferFrom);
+            playerRepo.deletePlayerFromAnyTeam(player.getId());
             teamRepo.save(transferTo);
             return player;
         }
@@ -91,6 +86,7 @@ public class PlayerService {
     }
 
     public void deletePlayer(Long id) {
+        playerRepo.deletePlayerFromAnyTeam(id);
         playerRepo.deleteById(id);
     }
 }

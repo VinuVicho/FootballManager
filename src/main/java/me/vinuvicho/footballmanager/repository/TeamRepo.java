@@ -13,11 +13,9 @@ import java.util.Optional;
 @Transactional
 public interface TeamRepo extends JpaRepository<Team, Long> {
 
-    @EntityGraph(attributePaths = {"players"})
     List<Team> getAllBy();
 
     Optional<Team> getTeamById(Long id);
 
-    @EntityGraph(attributePaths = {"players"})
     Optional<Team> getTeamByName(String name);
 }

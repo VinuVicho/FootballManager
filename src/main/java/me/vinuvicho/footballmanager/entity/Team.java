@@ -24,9 +24,8 @@ public class Team implements Serializable {
     private String city;
     private String country;
 
-    @OneToMany
-    @ToString.Exclude
-    private List<Player> players;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Player> players = new java.util.ArrayList<>();
 
     public Team() {
     }
