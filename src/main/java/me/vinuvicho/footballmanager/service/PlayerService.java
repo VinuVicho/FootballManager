@@ -82,8 +82,6 @@ public class PlayerService {
         return player;
     }
 
-
-
     public Long calculateTransferCost(Player player, Long teamCommission) {
         long experience = ChronoUnit.MONTHS.between(player.getCareerStarted(), LocalDate.now());
         long transferCost = experience * 100000 / player.getAge();
@@ -103,6 +101,9 @@ public class PlayerService {
     }
 
     public List<Player> getTeamPlayers(Long id) {
-        return playerRepo.getPlayersByTeamName(teamRepo.getTeamById(id).get().getName());
+        Team team = teamRepo.getTeamById(id).orElseThrow(() -> new TeamNotFoundException("Team not found"));
+        List<Player> players = playerRepo.getPlayersByTeamName(team.getName());
+        players.forEach(p -> p.setTransferCost(calculateTransferCost(p, team.getCommission())));
+        return players;
     }
 }

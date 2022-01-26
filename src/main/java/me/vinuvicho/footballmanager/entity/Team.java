@@ -23,6 +23,9 @@ public class Team implements Serializable {
     private String logo;
     private String city;
     private String country;
+    @Column(columnDefinition = "TEXT")
+    private String about;
+
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<Player> players = new java.util.ArrayList<>();

@@ -26,6 +26,8 @@ public class Player implements Serializable {
     private Long age;
     private LocalDate careerStarted;
     private String teamName;
+    @Column(columnDefinition="TEXT")
+    private String bio;
 
     @Transient
     private Long transferCost;
