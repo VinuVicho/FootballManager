@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { appRoutingModule } from './app.routing';
 import { AppComponent } from './app.component';
 import { TeamService } from './team.service';
 import { PlayerComponent } from './player';
@@ -11,14 +12,15 @@ import { TeamsComponent } from './teams';
 
 @NgModule({
   declarations: [
-    AppComponent, 
-    PlayerComponent, 
-    TeamComponent, 
-    TeamsComponent, 
+    AppComponent,
+    PlayerComponent,
+    TeamComponent,
+    TeamsComponent,
     PlayersComponent
   ],
   imports: [
-    BrowserModule, 
+    BrowserModule,
+    appRoutingModule,
     HttpClientModule
   ],
   providers: [TeamService],
