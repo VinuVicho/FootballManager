@@ -9,7 +9,6 @@ import me.vinuvicho.footballmanager.exeption.TooPoorTeam;
 import me.vinuvicho.footballmanager.repository.PlayerRepo;
 import me.vinuvicho.footballmanager.repository.TeamRepo;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -42,14 +41,21 @@ public class PlayerService {
 
     public Player updatePlayer(Player player) {
         Player databasePlayer = playerRepo.getPlayerById(player.getId());
-        if (Objects.equals(databasePlayer.getTeamName(), player.getTeamName())) {
+        if (Objects.equals(databasePlayer.getTeamName(), player.getTeamName())) {   //team not changed
+            return playerRepo.save(player);
+        }
+        if (player.getTeamName() == null) {             //remove team
+            Team transferFrom = teamRepo.getTeamByName(databasePlayer.getTeamName()).get();
+            List<Player> players = transferFrom.getPlayers();
+            players.removeIf(p -> p.getId() == databasePlayer.getId());
+            transferFrom.setPlayers(players);
+            teamRepo.save(transferFrom);
             return playerRepo.save(player);
         }
         Team transferTo = teamRepo.getTeamByName(player.getTeamName())
                 .orElseThrow(() -> new TeamNotFoundException("Cannot transfer to unexciting team"));
-        if (databasePlayer.getTeamName() != null) {
-            Team transferFrom = teamRepo.getTeamByName(databasePlayer.getTeamName())
-                    .orElseThrow(() -> new TeamNotFoundException("HOW U GOT THIS"));
+        if (databasePlayer.getTeamName() != null) {                                 //team changed
+            Team transferFrom = teamRepo.getTeamByName(databasePlayer.getTeamName()).get();
             Long transferCost = calculateTransferCost(databasePlayer, transferFrom.getCommission());
             if (transferTo.getMoney() < transferCost) throw new TooPoorTeam("Team too poor to buy this guy");
 
@@ -57,7 +63,7 @@ public class PlayerService {
             transferFrom.setMoney(transferFrom.getMoney() + transferCost);
             playerRepo.save(player);
             List<Player> players = transferFrom.getPlayers();
-            players.remove(databasePlayer);
+            players.removeIf(p -> p.getId() == databasePlayer.getId());
             transferFrom.setPlayers(players);
             teamRepo.save(transferFrom);
             players = transferTo.getPlayers();
