@@ -1,1 +1,11 @@
-<h1>Many players displayed here</h1>
+<h1>All players:</h1>
+<div *ngFor="let player of players">
+<!--  Link to player here-->
+  <h4>{{player.name + ' ' + player.surname}}</h4>
+  <div *ngIf="player.photoUrl!=null">
+    <img style="max-width:300px;max-height: 200px" src="{{player.photoUrl}}" alt="ProfilePhoto">
+  </div>
+  <p>{{'Started career in ' + player.careerStarted}}</p>
+<!--  Link to Team here-->
+  <p>{{'In the ' + player.teamName + ' team'}}</p>
+</div>

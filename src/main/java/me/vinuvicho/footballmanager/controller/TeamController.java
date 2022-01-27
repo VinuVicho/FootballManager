@@ -30,7 +30,7 @@ public class TeamController {
         return new ResponseEntity<>(team, HttpStatus.OK);
     }
 
-    @GetMapping("/{teamId}/players")
+    @GetMapping("/{teamId}/players")            //not using
     public ResponseEntity<List<Player>> getTeamPlayers(@PathVariable("teamId") Long id) {
         List<Player> players = playerService.getTeamPlayers(id);
         return new ResponseEntity<>(players, HttpStatus.OK);
