@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Team } from './team/team';
 import { TeamService } from './team.service';
 import { NgForm } from '@angular/forms';
+import {Player} from "./player/player";
+
 
 @Component({
   selector: 'app-root',
@@ -10,22 +12,39 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  public teams: Team[] = [];
 
-  constructor(private teamService: TeamService) {  }
+  public team: Team = {
+    id: 1,
+    money: 12,
+    commission: 12,
+    name: "string",
+    logo: "string",
+    city: "string",
+    country: "string",
+    about: "string",
+    players: []
+  };
 
-  ngOnInit(): void {
-    this.getTeams();
+  constructor(private teamService: TeamService) {
   }
 
-  public getTeams(): void {
-    this.teamService.getTeams().subscribe(
-      (response: Team[]) => {
-        this.teams = response;
-        // console.log(this.teams);
+  ngOnInit(): void {
+  }
+
+  public toTeamPage(id: number) {   //TODO
+    console.log("Here should be link to created team page")
+  }
+
+  public createNewTeam(newForm: NgForm): void {
+    this.teamService.addTeam(newForm.value).subscribe(
+      (response: Team) => {
+        console.log(response);
+        this.toTeamPage(response.id);
+        newForm.reset();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
+        newForm.reset();
       }
     );
   }

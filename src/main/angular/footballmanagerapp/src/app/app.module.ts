@@ -9,6 +9,7 @@ import { PlayerComponent } from './player';
 import { TeamComponent } from './team';
 import { PlayersComponent } from './players';
 import { TeamsComponent } from './teams';
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { TeamsComponent } from './teams';
   imports: [
     BrowserModule,
     appRoutingModule,
+    FormsModule,
     HttpClientModule
   ],
   providers: [TeamService],

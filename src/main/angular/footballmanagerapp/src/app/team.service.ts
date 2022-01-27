@@ -25,4 +25,6 @@ export class TeamService {
     public deleteTeam(teamId : number): Observable<void> {
         return this.http.delete<void>(`${this.apiServerUrl}/team/${teamId}`);
     }
+
+
 }
