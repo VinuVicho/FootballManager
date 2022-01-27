@@ -3,6 +3,7 @@ package me.vinuvicho.footballmanager.controller;
 import lombok.AllArgsConstructor;
 import me.vinuvicho.footballmanager.entity.Player;
 import me.vinuvicho.footballmanager.entity.Team;
+import me.vinuvicho.footballmanager.exeption.TeamNotFoundException;
 import me.vinuvicho.footballmanager.service.PlayerService;
 import me.vinuvicho.footballmanager.service.TeamService;
 import org.springframework.http.HttpStatus;
@@ -26,14 +27,22 @@ public class TeamController {
 
     @GetMapping("/{teamId}")
     public ResponseEntity<Team> getTeamById(@PathVariable("teamId") Long id) {
-        Team team = teamService.findTeamById(id);
-        return new ResponseEntity<>(team, HttpStatus.OK);
+        try {
+            Team team = teamService.findTeamById(id);
+            return new ResponseEntity<>(team, HttpStatus.OK);
+        } catch (TeamNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{teamId}/players")            //not using
     public ResponseEntity<List<Player>> getTeamPlayers(@PathVariable("teamId") Long id) {
-        List<Player> players = playerService.getTeamPlayers(id);
-        return new ResponseEntity<>(players, HttpStatus.OK);
+        try {
+            List<Player> players = playerService.getTeamPlayers(id);
+            return new ResponseEntity<>(players, HttpStatus.OK);
+        } catch (TeamNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/new")
@@ -50,7 +59,11 @@ public class TeamController {
 
     @DeleteMapping("/{teamId}")
     public ResponseEntity<?> updateTeam(@PathVariable("teamId") Long id) {
-        teamService.deleteTeam(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            teamService.deleteTeam(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (TeamNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

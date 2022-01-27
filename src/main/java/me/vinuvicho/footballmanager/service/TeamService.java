@@ -30,12 +30,12 @@ public class TeamService {
         return teamRepo.save(team);
     }
 
-    public Team findTeamById(Long id) {
+    public Team findTeamById(Long id) throws TeamNotFoundException {
         return teamRepo.getTeamById(id).orElseThrow(() -> new TeamNotFoundException("No Team found"));
     }
 
     @SuppressWarnings("StringOperationCanBeSimplified")
-    public void deleteTeam(Long id) {
+    public void deleteTeam(Long id) throws TeamNotFoundException {
         Team team = teamRepo.getTeamById(id).orElseThrow(() -> new TeamNotFoundException("team doesnt exist"));
         List<Player> players = team.getPlayers();
         for (Player p: players) p.setTeamName(new String());

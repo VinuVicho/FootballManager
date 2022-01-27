@@ -1,9 +1,11 @@
 package me.vinuvicho.footballmanager.exeption;
 
-public class TeamNotFoundException extends IllegalStateException {
+import org.springframework.data.crossstore.ChangeSetPersister;
+
+public class TeamNotFoundException extends ChangeSetPersister.NotFoundException {
 
     public TeamNotFoundException(String e) {
-        super(e);
+
     }
 
 }

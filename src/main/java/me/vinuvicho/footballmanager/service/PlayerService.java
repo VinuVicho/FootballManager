@@ -21,7 +21,7 @@ public class PlayerService {
     private final PlayerRepo playerRepo;
     private final TeamRepo teamRepo;
 
-    public Player addPlayer(Player player) {        //TODO: validate?
+    public Player addPlayer(Player player) throws TeamNotFoundException {        //TODO: validate?
         if (player.getTeamName() == null) {
             return playerRepo.save(player);
         }
@@ -46,7 +46,7 @@ public class PlayerService {
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public Player updatePlayer(Player player) {
+    public Player updatePlayer(Player player) throws TooPoorTeam, TeamNotFoundException {
         Player databasePlayer = playerRepo.getPlayerById(player.getId());
         if (Objects.equals(databasePlayer.getTeamName(), player.getTeamName())) {   //team not changed
             return playerRepo.save(player);
@@ -88,7 +88,7 @@ public class PlayerService {
         return transferCost + transferCost / 100 * teamCommission;
     }
 
-    public Player findPlayerById(Long id) {
+    public Player findPlayerById(Long id) throws PlayerNotFoundException {
         Player player = playerRepo.findById(id).orElseThrow(() -> new PlayerNotFoundException("No Player found"));
         player.setTransferCost((player.getTeamName() == null) ? 0 :
                 calculateTransferCost(player, teamRepo.getTeamByName(player.getTeamName()).get().getCommission()));
@@ -100,7 +100,7 @@ public class PlayerService {
         playerRepo.deleteById(id);
     }
 
-    public List<Player> getTeamPlayers(Long id) {
+    public List<Player> getTeamPlayers(Long id) throws TeamNotFoundException {
         Team team = teamRepo.getTeamById(id).orElseThrow(() -> new TeamNotFoundException("Team not found"));
         List<Player> players = playerRepo.getPlayersByTeamName(team.getName());
         players.forEach(p -> p.setTransferCost(calculateTransferCost(p, team.getCommission())));
