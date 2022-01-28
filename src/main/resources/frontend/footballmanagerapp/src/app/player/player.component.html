@@ -1,0 +1,104 @@
+<h1>{{player?.playerName + ' ' + player?.surname}}</h1>
+<div *ngIf="player?.photoUrl!=null && player?.photoUrl!=''">
+  <img style="max-width:300px;max-height: 200px" src="{{player?.photoUrl}}" alt="ProfilePhoto">
+</div>
+<p>{{'Birth date: ' + player?.birthDate}}</p>
+<p>{{'Career start date: ' + player?.careerStarted}}</p>
+<div *ngIf="player?.teamName!=null">
+  <p>Is a part of <a href="{{'/team/' + player?.teamName}}">{{player?.teamName}}</a> team</p>
+  <p>Transfer cost: {{player?.transferCost}}</p>
+</div>
+<div *ngIf="player?.teamName==null">
+  <p>Player has no team</p>
+</div>
+<p>About player: {{player?.bio}}</p>
+
+<a class="nav-item nav-link" href="" data-toggle="modal" data-target="#updatePlayerModal">
+  <button class="btn btn-primary" data-dismiss="modal">Update</button>
+</a>
+<a class="nav-item nav-link" href="" data-toggle="modal" data-target="#deletePlayerModal">
+  <button class="btn btn-danger" data-dismiss="modal">Delete</button>
+</a>
+
+<!--Delete modal-->
+<div class="modal fade" id="deletePlayerModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModelLabel">Delete Player</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete player {{player?.playerName}}?</p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <button (click)="onDeletePlayer()" class="btn btn-danger" data-dismiss="modal">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="updatePlayerModal" tabindex="-1" role="dialog" aria-labelledby="playerEditModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updatePlayerModalLabel">Edit Player {{player?.playerName}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm">
+          <div class="form-group">
+            <label for="playerName">Player name:</label>
+            <input type="text" ngModel="{{player?.playerName}}" name="playerName" class="form-control" id="playerName"
+                   aria-describedby="emailHelp" placeholder="Player Name" required>
+          </div>
+          <input type="hidden" ngModel="{{player?.id}}" name="id" class="form-control" id="id" placeholder="Email">
+          <div class="form-group">
+            <label for="surname">Email Address:</label>
+            <input type="text" ngModel="{{player?.surname}}" name="surname" class="form-control" id="surname"
+                   placeholder="Surname" required>
+          </div>
+          <div class="form-group">
+            <label for="photoUrl">Player photoUrl:</label>
+            <input type="text" ngModel="{{player?.photoUrl}}" name="photoUrl" class="form-control" id="photoUrl"
+                   placeholder="Player photoUrl">
+          </div>
+          <div class="form-group">
+            <label for="birthDate">Player birth date:</label>
+            <input type="text" ngModel="{{player?.birthDate}}" name="birthDate" class="form-control" id="birthDate"
+                   placeholder="2001-07-26 (example)" required>
+          </div>
+          <div class="form-group">
+            <label for="careerStarted">Career started:</label>
+            <input type="text" ngModel="{{player?.careerStarted}}" name="careerStarted" class="form-control"
+                   id="careerStarted" placeholder="2020-02-21 (example)" required>
+          </div>
+          <div class="form-group">
+            <label for="teamName">Name of the team (transfer cost: {{player?.transferCost}}):</label>
+            <input type="text" ngModel="{{player?.teamName}}" class="form-control" id="teamName" name="teamName"
+                   placeholder="Team name">
+          </div>
+          <div class="form-group">
+            <label for="bio">Some additional info about player:</label>
+            <input type="text" ngModel="{{player?.bio}}" name="bio" class="form-control" id="bio"
+                   placeholder="About player" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+            <button [disabled]="editForm.invalid" (click)="onUpdatePlayer(editForm.value)" data-dismiss="modal"
+                    class="btn btn-primary">Save changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

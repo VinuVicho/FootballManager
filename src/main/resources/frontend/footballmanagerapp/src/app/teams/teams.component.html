@@ -1,0 +1,14 @@
+<h1>Teams:</h1>
+<div *ngFor="let team of teams">
+  <hr>
+  <a [routerLink]="['/team', team.name]">
+    <h3>{{team.name}}</h3>
+    <div *ngIf="team.logo!='' && team.logo!=null">
+      <img style="max-width:300px;max-height: 200px" src="{{team.logo}}" alt="TeamLogo">
+    </div>
+    <p>{{'Location: ' + team.city + ', ' + team.country}}</p>
+    <p>{{'Players size: ' + team.players.length}}</p>
+  </a>
+</div>
+
+
