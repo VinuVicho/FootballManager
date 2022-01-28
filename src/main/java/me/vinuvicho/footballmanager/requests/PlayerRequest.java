@@ -40,9 +40,10 @@ public class PlayerRequest implements Serializable {
 //        else transferCost = 0L;
     }
 
+    //PREDICATED
     public void calculateTransfer() {
         long experience = ChronoUnit.MONTHS.between(careerStarted, LocalDate.now());
-        transferCost = experience * 100000 / age;
+//        transferCost = experience * 100000 / age;
         if (team != null) transferCost = transferCost + transferCost / 100 * team.getCommission();
     }
 }

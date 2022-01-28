@@ -8,6 +8,9 @@
   <p>Is a part of <a href="{{'/team/' + player?.teamName}}">{{player?.teamName}}</a> team</p>
   <p>Transfer cost: {{player?.transferCost}}</p>
 </div>
+<div *ngIf="player?.teamName==null">
+  <p>Player has no team</p>
+</div>
 <p>About player: {{player?.bio}}</p>
 <a class="nav-item nav-link" href="" data-toggle="modal" data-target="#deletePlayerModal">
   <button class="btn btn-danger" data-dismiss="modal">Delete</button>
