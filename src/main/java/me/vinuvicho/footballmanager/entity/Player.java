@@ -1,14 +1,14 @@
 package me.vinuvicho.footballmanager.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 @Entity
 @Getter

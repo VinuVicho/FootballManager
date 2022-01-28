@@ -9,7 +9,6 @@ import me.vinuvicho.footballmanager.repository.TeamRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
