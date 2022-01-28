@@ -2,7 +2,11 @@ package me.vinuvicho.footballmanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.server.ErrorPage;
+import org.springframework.boot.web.server.ErrorPageRegistrar;
+import org.springframework.boot.web.server.ErrorPageRegistry;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -33,4 +37,10 @@ public class FootballManagerApplication {
 		return new CorsFilter(urlBasedCorsConfigurationSource);
 	}
 
+	@Bean
+	public ErrorPageRegistrar errorPageRegistrar() {
+		return (ErrorPageRegistry epr) -> {
+			epr.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/index.html"));
+		};
+	}
 }
