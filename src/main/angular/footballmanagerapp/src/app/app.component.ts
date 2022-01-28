@@ -23,19 +23,12 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
   }
 
-  public toTeamPage(id: number) {
-    this.router.navigate(['/team/' + id]);
-  }
-
-  public toPlayerPage(id: number) {
-    this.router.navigate(['/player/' + id]);
-  }
-
   public createNewTeam(newForm: NgForm): void {
     this.teamService.addTeam(newForm.value).subscribe(
       (response: Team) => {
         console.log(response);
-        this.toTeamPage(response.id);
+        this.router.navigate(['/team/' + response.id]);
+        window.location.reload();
         newForm.reset();
       },
       (error: HttpErrorResponse) => {
@@ -50,7 +43,8 @@ export class AppComponent implements OnInit{
     this.playerService.addPlayer(newForm.value).subscribe(
       (response: Player) => {
         console.log(response);
-        this.toPlayerPage(response.id);
+        this.router.navigate(['/player/' + response.id]);
+        window.location.reload();
         newForm.reset();
       },
       (error: HttpErrorResponse) => {

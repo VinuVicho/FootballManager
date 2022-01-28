@@ -49,6 +49,7 @@ public class PlayerService {
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     public Player updatePlayer(Player player) throws TooPoorTeam, TeamNotFoundException {
+        if (player.getTeamName() != null && player.getTeamName() == "") player.setTeamName(null);
         Player databasePlayer = playerRepo.getPlayerById(player.getId());
         if (Objects.equals(databasePlayer.getTeamName(), player.getTeamName())) {   //team not changed
             return playerRepo.save(player);

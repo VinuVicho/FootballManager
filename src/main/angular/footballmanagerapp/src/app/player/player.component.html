@@ -43,12 +43,12 @@
 </div>
 
 <!-- Edit Modal -->
-<div class="modal fade" id="updatePlayerModal" tabindex="-1" role="dialog" aria-labelledby="employeeEditModalLabel"
+<div class="modal fade" id="updatePlayerModal" tabindex="-1" role="dialog" aria-labelledby="playerEditModalLabel"
      aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="updateEmployeeModalLabel">Edit Player {{player?.playerName}}</h5>
+        <h5 class="modal-title" id="updatePlayerModalLabel">Edit Player {{player?.playerName}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -82,13 +82,13 @@
                    id="careerStarted" placeholder="2020-02-21 (example)" required>
           </div>
           <div class="form-group">
-            <label for="teamName">Name of the team (if exist):</label>
+            <label for="teamName">Name of the team (transfer cost: {{player?.transferCost}}):</label>
             <input type="text" ngModel="{{player?.teamName}}" class="form-control" id="teamName" name="teamName"
                    placeholder="Team name">
           </div>
           <div class="form-group">
             <label for="bio">Some additional info about player:</label>
-            <input type="text" ngModel="{{player?.bio}}" name="imageUrl" class="form-control" id="bio"
+            <input type="text" ngModel="{{player?.bio}}" name="bio" class="form-control" id="bio"
                    placeholder="About player" required>
           </div>
           <div class="modal-footer">

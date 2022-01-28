@@ -26,7 +26,9 @@ public class TeamService {
         return teamRepo.getAllBy();
     }
 
-    public Team updateTeam(Team team) {         //prob move to addTeam method, bc of same code
+    public Team updateTeam(Team team) {
+        team.setPlayers(teamRepo.getTeamById(team.getId()).get().getPlayers());
+        System.out.println(team.getPlayers());
         return teamRepo.save(team);
     }
 

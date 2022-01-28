@@ -34,6 +34,18 @@ export class TeamComponent implements OnInit {
     );
   }
 
+  public onUpdateTeam(team: Team): void {
+    this.teamService.updateTeam(team).subscribe(
+      (response: Team) => {
+        console.log(response);
+        window.location.reload();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
   public onDeleteTeam() {
     this.teamService.deleteTeam(this.team!.id).subscribe(
       (response: void) => {

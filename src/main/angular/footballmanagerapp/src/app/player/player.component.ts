@@ -36,8 +36,8 @@ export class PlayerComponent implements OnInit {
   public onUpdatePlayer(player: Player): void {
     this.playerService.updatePlayer(player).subscribe(
       (response: Player) => {
-        console.log(response)
-        this.router.navigate(['/player/' + player.id]);
+        console.log(response);
+        window.location.reload();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
