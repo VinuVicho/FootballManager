@@ -1,4 +1,5 @@
 <!-- nav -->
+<!--suppress ALL -->
 <nav class="navbar navbar-expand navbar-dark bg-dark" id="main-container">
   <div class="navbar-nav">
     <a class="nav-item nav-link" routerLink="/">Teams</a>
@@ -62,7 +63,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save team</button>
+            <button [disabled]="addForm.invalid" id="saveTeamButton" type="submit" class="btn btn-primary">Save team</button>
           </div>
         </form>
       </div>
@@ -96,8 +97,9 @@
             <input type="text" ngModel name="photoUrl" class="form-control" id="photoUrl" placeholder="Photo link here">
           </div>
           <div class="form-group">
-            <label for="age">Age:</label>
-            <input type="text" ngModel name="age" class="form-control" id="age" placeholder="Age" required>
+            <label for="birthDate">Date of birth:</label>
+            <input type="text" ngModel name="birthDate" class="form-control" id="birthDate"
+                   placeholder="2001-07-26 (example)" required>
           </div>
           <div class="form-group">
             <label for="careerStarted">Career started:</label>
@@ -115,7 +117,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" id="add-player-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button [disabled]="newForm.invalid" type="submit" class="btn btn-primary">Save player</button>
+            <button [disabled]="newForm.invalid" id="savePlayerButton" type="submit" class="btn btn-primary">Save player</button>
           </div>
         </form>
       </div>

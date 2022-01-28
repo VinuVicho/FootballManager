@@ -5,6 +5,7 @@ import { TeamService } from './team.service';
 import { NgForm } from '@angular/forms';
 import {Player} from "./player/player";
 import {PlayerService} from "./player.service";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -14,33 +15,23 @@ import {PlayerService} from "./player.service";
 })
 export class AppComponent implements OnInit{
 
-  public team: Team = {
-    id: 1,
-    money: 12,
-    commission: 12,
-    name: "string",
-    logo: "string",
-    city: "string",
-    country: "string",
-    about: "string",
-    players: []
-  };
-
-  constructor(private teamService: TeamService, private playerService: PlayerService) {
+  constructor(private teamService: TeamService,
+              private playerService: PlayerService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
   }
 
-  public toTeamPage(id: number) {   //TODO
-    console.log("Here should be link to created team page " + id)
+  public toTeamPage(id: number) {
+    this.router.navigate(['/team/' + id]);
   }
 
-  public toPlayerPage(id: number) {   //TODO
-    console.log("Here should be link to created player page " + id)
+  public toPlayerPage(id: number) {
+    this.router.navigate(['/player/' + id]);
   }
 
-  public createNewTeam(newForm: NgForm): void {   //TODO: make auto close form
+  public createNewTeam(newForm: NgForm): void {
     this.teamService.addTeam(newForm.value).subscribe(
       (response: Team) => {
         console.log(response);
@@ -54,7 +45,7 @@ export class AppComponent implements OnInit{
     );
   }
 
-  createNewPlayer(newForm: NgForm): void {   //TODO: make auto close form
+  createNewPlayer(newForm: NgForm): void {
     console.log(newForm.value)
     this.playerService.addPlayer(newForm.value).subscribe(
       (response: Player) => {

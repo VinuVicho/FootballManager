@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Player} from "../player/player";
 import {PlayerService} from "../player.service";
 import {HttpErrorResponse} from "@angular/common/http";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Team} from "./team";
 import {TeamService} from "../team.service";
 
@@ -11,7 +11,10 @@ export class TeamComponent implements OnInit {
 
   team: Team | undefined;
 
-  constructor(private route: ActivatedRoute, private teamService: TeamService) { }
+  constructor(private route: ActivatedRoute,
+              private teamService: TeamService,
+              private router: Router) {
+  }
 
   ngOnInit() {
     const routeParams = this.route.snapshot.paramMap;
@@ -35,6 +38,7 @@ export class TeamComponent implements OnInit {
     this.teamService.deleteTeam(this.team!.id).subscribe(
       (response: void) => {
         console.log("Redirect to all teams");
+        this.router.navigate(['/']);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);

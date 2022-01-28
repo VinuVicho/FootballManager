@@ -1,16 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {Player} from "./player";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {PlayerService} from "../player.service";
 import {Team} from "../team/team";
 import {HttpErrorResponse} from "@angular/common/http";
 
-@Component({ templateUrl: 'player.component.html' })
+@Component({templateUrl: 'player.component.html'})
 export class PlayerComponent implements OnInit {
 
   player: Player | undefined;
 
-  constructor(private route: ActivatedRoute, private playerService: PlayerService) { }
+  constructor(private route: ActivatedRoute,
+              private playerService: PlayerService,
+              private router: Router) {
+  }
 
   ngOnInit() {
     const routeParams = this.route.snapshot.paramMap;
@@ -30,10 +33,23 @@ export class PlayerComponent implements OnInit {
     );
   }
 
+  public onUpdatePlayer(player: Player): void {
+    this.playerService.updatePlayer(player).subscribe(
+      (response: Player) => {
+        console.log(response)
+        this.router.navigate(['/player/' + player.id]);
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
   public onDeletePlayer() {
     this.playerService.deletePlayer(this.player!.id).subscribe(
       (response: void) => {
         console.log("Redirect to all players");
+        this.router.navigate(['/players']);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);

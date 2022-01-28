@@ -12,17 +12,17 @@
   <p>{{'Team commission: ' + team?.commission}}%</p>
 </div>
 
+<a class="nav-item nav-link" href="" data-toggle="modal" data-target="#deletePlayerModal">
+  <button class="btn btn-danger" data-dismiss="modal">Delete</button>
+</a>
+<br>
+
 <div *ngIf="team?.players?.length == 0">
   <p>Team doesn't have any player</p>
 </div>
 <div *ngIf="team?.players?.length != 0">
   <h4>{{'Team has ' + team?.players?.length + ' players:'}}</h4>
 </div>
-
-<a class="nav-item nav-link" href="" data-toggle="modal" data-target="#deletePlayerModal">
-  <button class="btn btn-danger" data-dismiss="modal">Delete</button>
-</a>
-
 
 <div *ngFor="let player of team?.players">
   <hr>
