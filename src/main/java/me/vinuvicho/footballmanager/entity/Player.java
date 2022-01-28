@@ -20,10 +20,10 @@ public class Player implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_sequence")
     private Long id;
-    private String name;
+    private String playerName;
     private String surname;
     private String photoUrl;
-    private Long age;
+    private LocalDate birthDate;
     private LocalDate careerStarted;
     private String teamName;
     @Column(columnDefinition="TEXT")

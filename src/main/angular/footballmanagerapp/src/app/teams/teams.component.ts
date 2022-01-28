@@ -13,6 +13,7 @@ export class TeamsComponent implements OnInit{
   ngOnInit(): void {
     this.getTeams();
   }
+
   public getTeams(): void {
     this.teamService.getTeams().subscribe(
       (response: Team[]) => {

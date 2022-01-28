@@ -21,7 +21,8 @@ public class PlayerService {
     private final PlayerRepo playerRepo;
     private final TeamRepo teamRepo;
 
-    public Player addPlayer(Player player) throws TeamNotFoundException {        //TODO: validate?
+    public Player addPlayer(Player player) throws TeamNotFoundException {
+        player = validatePlayer(player);
         if (player.getTeamName() == null) {
             return playerRepo.save(player);
         }
@@ -82,9 +83,14 @@ public class PlayerService {
         return player;
     }
 
+    public Player validatePlayer(Player player) {
+        if (player.getTeamName() == "") player.setTeamName(null);
+        return player;
+    }
+
     public Long calculateTransferCost(Player player, Long teamCommission) {
         long experience = ChronoUnit.MONTHS.between(player.getCareerStarted(), LocalDate.now());
-        long transferCost = experience * 100000 / player.getAge();
+        long transferCost = experience * 100000 / ChronoUnit.YEARS.between(player.getBirthDate(), LocalDate.now());
         return transferCost + transferCost / 100 * teamCommission;
     }
 

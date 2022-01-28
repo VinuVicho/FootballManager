@@ -14,6 +14,10 @@ export class PlayerService {
     return this.http.get<Player[]>(`${this.apiServerUrl}/player/all`);
   }
 
+  public getPlayer(playerId: number): Observable<Player> {
+    return this.http.get<Player>(`${this.apiServerUrl}/player/${playerId}`)
+  }
+
   public addPlayer(player : Player): Observable<Player> {
     return this.http.post<Player>(`${this.apiServerUrl}/player/new`, player);
   }
@@ -22,7 +26,7 @@ export class PlayerService {
     return this.http.put<Player>(`${this.apiServerUrl}/player/update`, player);
   }
 
-  public deletePlayer(teamId : number): Observable<void> {
-    return this.http.delete<void>(`${this.apiServerUrl}/player/${teamId}`);
+  public deletePlayer(playerId : number): Observable<void> {
+    return this.http.delete<void>(`${this.apiServerUrl}/player/${playerId}`);
   }
 }

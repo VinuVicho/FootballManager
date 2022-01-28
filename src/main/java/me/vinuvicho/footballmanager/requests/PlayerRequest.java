@@ -16,10 +16,10 @@ import java.time.temporal.ChronoUnit;
 @ToString
 public class PlayerRequest implements Serializable {
     private Long id;
-    private String name;
+    private String playerName;
     private String surname;
     private String photoUrl;
-    private Long age;
+    private LocalDate age;
     private LocalDate careerStarted;
 
     private PlayerTeam team;
@@ -28,10 +28,10 @@ public class PlayerRequest implements Serializable {
 
     public PlayerRequest(Player player) {
         this.id = player.getId();
-        this.name = player.getName();
+        this.playerName = player.getPlayerName();
         this.surname = player.getSurname();
         this.photoUrl = player.getPhotoUrl();
-        this.age = player.getAge();
+        this.age = player.getBirthDate();
         this.careerStarted = player.getCareerStarted();
 //        if (player.getTeam() != null) {
 //            this.team = new PlayerTeam(player.getTeam());

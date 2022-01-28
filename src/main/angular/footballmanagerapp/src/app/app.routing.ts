@@ -8,7 +8,8 @@ import { TeamsComponent } from './teams';
 const routes: Routes = [
   { path: '', component: TeamsComponent },
   { path: 'players', component: PlayersComponent },
-  // { path: 'user', component: RegisterComponent },    //TODO: make pathVariable somehow
+  { path: 'player/:playerId', component: PlayerComponent },
+  { path: 'team/:teamId', component: TeamComponent },
 
   // if nothing of above = redirect to main page (teams)
   { path: '**', redirectTo: '' }

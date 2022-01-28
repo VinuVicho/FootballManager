@@ -1,9 +1,9 @@
 export interface Player {
     id: number;
-    name: string;
+    playerName: string;
     surname: string;
     photoUrl: string;
-    age: number;
+    birthDate: number;
     careerStarted: string;
     teamName: string;
     transferCost: number;
