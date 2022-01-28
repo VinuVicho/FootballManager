@@ -42,7 +42,6 @@ public class PlayerController {
         try {
             newPlayer = playerService.addPlayer(player);
         } catch (TeamNotFoundException e) {
-            System.out.println("team with name " + player.getTeamName() + " not found");
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
         return new ResponseEntity<>(newPlayer, HttpStatus.CREATED);
@@ -54,10 +53,8 @@ public class PlayerController {
             Player updatedPlayer = playerService.updatePlayer(player);
             return new ResponseEntity<>(updatedPlayer, HttpStatus.CREATED);
         } catch (TooPoorTeam e) {
-            System.out.println("Team " + player.getTeamName() + " too poor to buy this champ");
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         } catch (TeamNotFoundException e) {
-            System.out.println("team with name " + player.getTeamName() + " not found");
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
     }

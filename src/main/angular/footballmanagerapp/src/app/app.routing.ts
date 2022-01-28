@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: '', component: TeamsComponent },
   { path: 'players', component: PlayersComponent },
   { path: 'player/:playerId', component: PlayerComponent },
-  { path: 'team/:teamId', component: TeamComponent },
+  { path: 'team/:teamName', component: TeamComponent },
 
   // if nothing of above = redirect to main page (teams)
   { path: '**', redirectTo: '' }

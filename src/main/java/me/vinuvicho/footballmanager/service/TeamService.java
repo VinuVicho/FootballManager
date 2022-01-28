@@ -30,8 +30,8 @@ public class TeamService {
         return teamRepo.save(team);
     }
 
-    public Team findTeamById(Long id) throws TeamNotFoundException {
-        return teamRepo.getTeamById(id).orElseThrow(() -> new TeamNotFoundException("No Team found"));
+    public Team findTeamByName(String name) throws TeamNotFoundException {
+        return teamRepo.getTeamByName(name).orElseThrow(() -> new TeamNotFoundException("No Team found"));
     }
 
     @SuppressWarnings("StringOperationCanBeSimplified")

@@ -25,10 +25,10 @@ public class TeamController {
         return new ResponseEntity<>(teams, HttpStatus.OK);
     }
 
-    @GetMapping("/{teamId}")
-    public ResponseEntity<Team> getTeamById(@PathVariable("teamId") Long id) {
+    @GetMapping("/{teamName}")
+    public ResponseEntity<Team> getTeamByName(@PathVariable("teamName") String name) {
         try {
-            Team team = teamService.findTeamById(id);
+            Team team = teamService.findTeamByName(name);
             return new ResponseEntity<>(team, HttpStatus.OK);
         } catch (TeamNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -14,7 +14,11 @@ export class TeamService {
         return this.http.get<Team[]>(`${this.apiServerUrl}/team/all`);
     }
 
-    public addTeam(team : Team): Observable<Team> {
+    public getTeam(teamName: string): Observable<Team> {
+      return this.http.get<Team>(`${this.apiServerUrl}/team/${teamName}`)
+    }
+
+  public addTeam(team : Team): Observable<Team> {
         return this.http.post<Team>(`${this.apiServerUrl}/team/new`, team);
     }
 

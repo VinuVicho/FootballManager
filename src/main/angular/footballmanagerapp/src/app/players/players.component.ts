@@ -5,15 +5,17 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {Player} from "../player/player";
 import {PlayerService} from "../player.service";
 
-@Component({ templateUrl: 'players.component.html' })
-export class PlayersComponent implements OnInit{
+@Component({templateUrl: 'players.component.html'})
+export class PlayersComponent implements OnInit {
   public players: Player[] = [];
 
-  constructor(private playerService: PlayerService) {  }
+  constructor(private playerService: PlayerService) {
+  }
 
   ngOnInit(): void {
     this.getPlayers();
   }
+
   public getPlayers(): void {
     this.playerService.getPlayers().subscribe(
       (response: Player[]) => {

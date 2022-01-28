@@ -1,1 +1,59 @@
-<h1>1 team displayed here</h1>
+<h1>{{team?.name}}</h1>
+<div *ngIf="team?.logo!=null && team?.logo!=''">
+  <img style="max-width:300px;max-height: 200px" src="{{team?.logo}}" alt="ProfilePhoto">
+</div>
+<p>{{'Location: ' + team?.city + ', ' + team?.country}}</p>
+<p>{{'About team: ' + team?.about}}</p>
+<p>{{'Team money: ' + team?.money}}</p>
+<div *ngIf="team?.commission == 0">
+  <p>Team doesn't take any commission</p>
+</div>
+<div *ngIf="team?.commission != 0">
+  <p>{{'Team commission: ' + team?.commission}}%</p>
+</div>
+
+<div *ngIf="team?.players?.length == 0">
+  <p>Team doesn't have any player</p>
+</div>
+<div *ngIf="team?.players?.length != 0">
+  <h4>{{'Team has ' + team?.players?.length + ' players:'}}</h4>
+</div>
+
+<a class="nav-item nav-link" href="" data-toggle="modal" data-target="#deletePlayerModal">
+  <button class="btn btn-danger" data-dismiss="modal">Delete</button>
+</a>
+
+
+<div *ngFor="let player of team?.players">
+  <hr>
+  <a [routerLink]="['/player', player.id]">
+    <h4>{{player.playerName + ' ' + player.surname}}</h4>
+    <div *ngIf="player.photoUrl!=null && player.photoUrl!=''">
+      <img style="max-width:300px;max-height: 200px" src="{{player.photoUrl}}" alt="ProfilePhoto">
+    </div>
+    <p>{{'Started career in ' + player.careerStarted}}</p>
+  </a>
+</div>
+
+
+
+<div class="modal fade" id="deletePlayerModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModelLabel">Delete Team</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete team {{team?.name}}?</p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <button (click)="onDeleteTeam()" class="btn btn-danger" data-dismiss="modal">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,10 +1,8 @@
 package me.vinuvicho.footballmanager.exeption;
 
-import org.springframework.data.crossstore.ChangeSetPersister;
-
-public class TooPoorTeam  extends ChangeSetPersister.NotFoundException {
+public class TooPoorTeam extends IllegalStateException {
 
     public TooPoorTeam(String e) {
-
+        System.out.println(e);
     }
 }
