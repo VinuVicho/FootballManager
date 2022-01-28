@@ -27,7 +27,7 @@ public class PlayerController {
 
     @GetMapping("/{playerId}")
     public ResponseEntity<Player> getPlayerById(@PathVariable("playerId") Long id) {
-        Player player = null;
+        Player player;
         try {
             player = playerService.findPlayerById(id);
         } catch (PlayerNotFoundException e) {
@@ -38,7 +38,7 @@ public class PlayerController {
 
     @PostMapping("/new")
     public ResponseEntity<Player> addPlayer(@RequestBody Player player) {
-        Player newPlayer = null;
+        Player newPlayer;
         try {
             newPlayer = playerService.addPlayer(player);
         } catch (TeamNotFoundException e) {
