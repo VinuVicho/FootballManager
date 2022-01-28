@@ -18,8 +18,14 @@ public class TeamService {
     private final PlayerRepo playerRepo;
 
     public Team addTeam(Team team) {
-        //TODO: validate
+        team = validateTeam(team);
         return teamRepo.save(team);
+    }
+
+    public Team validateTeam(Team team) {
+        if (team.getCommission() < 0) team.setCommission(0L);
+        if (team.getCommission() > 10) team.setCommission(10L);
+        return team;
     }
 
     public List<Team> findAllTeams() {
@@ -27,8 +33,8 @@ public class TeamService {
     }
 
     public Team updateTeam(Team team) {
+        team = validateTeam(team);
         team.setPlayers(teamRepo.getTeamById(team.getId()).get().getPlayers());
-        System.out.println(team.getPlayers());
         return teamRepo.save(team);
     }
 
