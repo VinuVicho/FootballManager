@@ -51,11 +51,11 @@ public class PlayerController {
     public ResponseEntity<Player> updatePlayer(@RequestBody Player player) {
         try {
             Player updatedPlayer = playerService.updatePlayer(player);
-            return new ResponseEntity<>(updatedPlayer, HttpStatus.CREATED);
+            return new ResponseEntity<>(updatedPlayer, HttpStatus.OK);
         } catch (TooPoorTeam e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (TeamNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

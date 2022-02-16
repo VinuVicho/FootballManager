@@ -54,7 +54,7 @@ public class TeamController {
     @PutMapping("/update")
     public ResponseEntity<Team> updateTeam(@RequestBody Team team) {
         Team updateTeam = teamService.updateTeam(team);
-        return new ResponseEntity<>(updateTeam, HttpStatus.CREATED);
+        return new ResponseEntity<>(updateTeam, HttpStatus.OK);
     }
 
     @DeleteMapping("/{teamId}")
