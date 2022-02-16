@@ -1,9 +1,6 @@
 package me.vinuvicho.footballmanager.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.IOException;
@@ -11,8 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @ToString
 public class Player implements Serializable {
@@ -31,10 +27,6 @@ public class Player implements Serializable {
 
     @Transient
     private Long transferCost;
-
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        System.out.println(1);
-    }
 
     public Player() {
     }
