@@ -8,7 +8,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @ToString
 public class Player implements Serializable {
