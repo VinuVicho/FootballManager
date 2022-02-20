@@ -28,7 +28,7 @@ public class Team implements Serializable {
     @Column(columnDefinition = "TEXT")
     private String about;
 
-
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER)
     private List<Player> players = new java.util.ArrayList<>();
 

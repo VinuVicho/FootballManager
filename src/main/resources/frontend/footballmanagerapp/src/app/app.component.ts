@@ -27,8 +27,8 @@ export class AppComponent implements OnInit{
     this.teamService.addTeam(newForm.value).subscribe(
       (response: Team) => {
         console.log(response);
-        this.router.navigate(['/team/' + response.id]);
         window.location.reload();
+        // this.router.navigate(['/team/' + response.id]);
         newForm.reset();
       },
       (error: HttpErrorResponse) => {
@@ -43,7 +43,7 @@ export class AppComponent implements OnInit{
     this.playerService.addPlayer(newForm.value).subscribe(
       (response: Player) => {
         console.log(response);
-        this.router.navigate(['/player/' + response.id]);
+        // this.router.navigate(['/player/' + response.id]);
         window.location.reload();
         newForm.reset();
       },

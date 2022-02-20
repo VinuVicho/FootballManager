@@ -1,5 +1,6 @@
 package me.vinuvicho.footballmanager.repository;
 
+import me.vinuvicho.footballmanager.entity.Player;
 import me.vinuvicho.footballmanager.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

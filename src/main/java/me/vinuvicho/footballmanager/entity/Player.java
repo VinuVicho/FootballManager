@@ -3,7 +3,6 @@ package me.vinuvicho.footballmanager.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -22,9 +21,11 @@ public class Player implements Serializable {
     private String photoUrl;
     private LocalDate birthDate;
     private LocalDate careerStarted;
-    private String teamName;
     @Column(columnDefinition="TEXT")
     private String bio;
+
+    @ManyToOne()
+    private Team team;
 
     @Transient
     private Long transferCost;

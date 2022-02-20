@@ -1,9 +1,12 @@
 package me.vinuvicho.footballmanager.controller;
 
 import lombok.AllArgsConstructor;
+import me.vinuvicho.footballmanager.dto.PlayerDTO;
+import me.vinuvicho.footballmanager.dto.TeamDTO;
 import me.vinuvicho.footballmanager.entity.Player;
 import me.vinuvicho.footballmanager.entity.Team;
 import me.vinuvicho.footballmanager.exeption.TeamNotFoundException;
+import me.vinuvicho.footballmanager.mapper.TeamToTeamDTOMapper;
 import me.vinuvicho.footballmanager.service.PlayerService;
 import me.vinuvicho.footballmanager.service.TeamService;
 import org.springframework.http.HttpStatus;
@@ -11,34 +14,39 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/team")
 public class TeamController {
     private final TeamService teamService;
+    private final TeamToTeamDTOMapper teamDTOMapper;
     private PlayerService playerService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<Team>> getAllTeams() {
-        List<Team> teams = teamService.findAllTeams();
+    public ResponseEntity<List<TeamDTO>> getAllTeams() {
+        List<TeamDTO> teams = teamService.findAllTeams()
+                .stream().map(TeamDTO::new).collect(Collectors.toList());
         return new ResponseEntity<>(teams, HttpStatus.OK);
     }
 
     @GetMapping("/{teamName}")
-    public ResponseEntity<Team> getTeamByName(@PathVariable("teamName") String name) {
+    public ResponseEntity<TeamDTO> getTeamByName(@PathVariable("teamName") String name) {
+        System.out.println(name);
         try {
             Team team = teamService.findTeamByName(name);
-            return new ResponseEntity<>(team, HttpStatus.OK);
+            return new ResponseEntity<>(new TeamDTO(team), HttpStatus.OK);
         } catch (TeamNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/{teamId}/players")            //not using
-    public ResponseEntity<List<Player>> getTeamPlayers(@PathVariable("teamId") Long id) {
+    public ResponseEntity<List<PlayerDTO>> getTeamPlayers(@PathVariable("teamId") Long id) {
         try {
-            List<Player> players = playerService.getTeamPlayers(id);
+            List<PlayerDTO> players = playerService.getTeamPlayers(id)
+                    .stream().map(PlayerDTO::new).collect(Collectors.toList());
             return new ResponseEntity<>(players, HttpStatus.OK);
         } catch (TeamNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,19 +54,27 @@ public class TeamController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Team> addTeam(@RequestBody Team team) {
-        Team newTeam = teamService.addTeam(team);
-        return new ResponseEntity<>(newTeam, HttpStatus.CREATED);
+    public ResponseEntity<TeamDTO> addTeam(@RequestBody TeamDTO team) {
+        try {
+            Team newTeam = teamService.addTeam(teamDTOMapper.toEntity(team));
+            return new ResponseEntity<>(new TeamDTO(newTeam), HttpStatus.CREATED);
+        } catch (TeamNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Team> updateTeam(@RequestBody Team team) {
-        Team updateTeam = teamService.updateTeam(team);
-        return new ResponseEntity<>(updateTeam, HttpStatus.OK);
+    public ResponseEntity<TeamDTO> updateTeam(@RequestBody TeamDTO team) {
+        try {
+            Team updateTeam = teamService.updateTeam(teamDTOMapper.toEntity(team));
+            return new ResponseEntity<>(new TeamDTO(updateTeam), HttpStatus.OK);
+        } catch (TeamNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{teamId}")
-    public ResponseEntity<?> updateTeam(@PathVariable("teamId") Long id) {
+    public ResponseEntity<?> deleteTeam(@PathVariable("teamId") Long id) {
         try {
             teamService.deleteTeam(id);
             return new ResponseEntity<>(HttpStatus.OK);

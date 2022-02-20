@@ -15,7 +15,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("OptionalGetWithoutIsPresent")
 @Service
 @AllArgsConstructor
 public class PlayerService {
@@ -23,46 +22,47 @@ public class PlayerService {
     private final TeamRepo teamRepo;
 
     public Player addPlayer(Player player) throws TeamNotFoundException {
+        System.out.println(player);     //FIXME: delete
+
         player = validatePlayer(player);
-        if (player.getTeamName() == null) {
+        if (player.getTeam() == null) {
             return playerRepo.save(player);
         }
-        Team team = teamRepo.getTeamByName(player.getTeamName())
-                .orElseThrow(() -> new TeamNotFoundException("Team not found"));
+        Team team = player.getTeam();
         player = playerRepo.save(player);
         List<Player> players = team.getPlayers();
         players.add(player);
         team.setPlayers(players);
         teamRepo.save(team);
+
+        System.out.println(player);     //FIXME: delete
         return player;
     }
 
     public List<Player> findAllPlayers() {
         List<Player> players = playerRepo.findAll();
-        for (Player p : players) {
-            if (p.getTeamName() == null) p.setTransferCost(0L);
-            else p.setTransferCost(calculateTransferCost
-                    (p, teamRepo.getTeamByName(p.getTeamName()).get().getCommission()));
+        for (Player p : players) {      //not needed
+            if (p.getTeam() == null) p.setTransferCost(0L);
+            else p.setTransferCost(calculateTransferCost(p));
         }
         return players;
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public Player updatePlayer(Player player) throws TooPoorTeam, TeamNotFoundException {
-        if (player.getTeamName() != null && player.getTeamName() == "") player.setTeamName(null);
         Player databasePlayer = playerRepo.getPlayerById(player.getId());
-        if (Objects.equals(databasePlayer.getTeamName(), player.getTeamName())) {   //team not changed
+        System.out.println("Database playerTeam " + databasePlayer.getTeam());
+        System.out.println("Updated playerTeam " + player.getTeam());
+        if (Objects.equals(databasePlayer.getTeam().getName(), player.getTeam().getName())) {   //team not changed
             return playerRepo.save(player);
         }
-        if (player.getTeamName() == null) {                                         //remove team
+        if (player.getTeam() == null) {                                         //remove team
             playerRepo.deletePlayerFromAnyTeam(player.getId());
             return playerRepo.save(player);
         }
-        Team transferTo = teamRepo.getTeamByName(player.getTeamName())
-                .orElseThrow(() -> new TeamNotFoundException("Cannot transfer to team, that doesnt exist"));
-        if (databasePlayer.getTeamName() != null) {                                 //team changed
-            Team transferFrom = teamRepo.getTeamByName(databasePlayer.getTeamName()).get();
-            Long transferCost = calculateTransferCost(databasePlayer, transferFrom.getCommission());
+        Team transferTo = player.getTeam();
+        if (databasePlayer.getTeam() != null) {                                 //team changed
+            Team transferFrom = databasePlayer.getTeam();
+            Long transferCost = calculateTransferCost(databasePlayer);
             if (transferTo.getMoney() < transferCost) throw new TooPoorTeam("Team too poor to buy this guy");
 
             transferTo.setMoney(transferTo.getMoney() - transferCost);
@@ -86,20 +86,25 @@ public class PlayerService {
     }
 
     public Player validatePlayer(Player player) {
-        if (player.getTeamName() == "") player.setTeamName(null);
+        //TODO: validation
         return player;
     }
 
-    public Long calculateTransferCost(Player player, Long teamCommission) {
+    public Long calculateTransferCost(Player player, Long commission) {
         long experience = ChronoUnit.MONTHS.between(player.getCareerStarted(), LocalDate.now());
         long transferCost = experience * 100000 / ChronoUnit.YEARS.between(player.getBirthDate(), LocalDate.now());
-        return transferCost + transferCost / 100 * teamCommission;
+        return transferCost + transferCost / 100 * commission;
+    }
+
+    public Long calculateTransferCost(Player player) {
+        long experience = ChronoUnit.MONTHS.between(player.getCareerStarted(), LocalDate.now());
+        long transferCost = experience * 100000 / ChronoUnit.YEARS.between(player.getBirthDate(), LocalDate.now());
+        return transferCost + transferCost / 100 * player.getTeam().getCommission();
     }
 
     public Player findPlayerById(Long id) throws PlayerNotFoundException {
         Player player = playerRepo.findById(id).orElseThrow(() -> new PlayerNotFoundException("No Player found"));
-        player.setTransferCost((player.getTeamName() == null) ? 0 :
-                calculateTransferCost(player, teamRepo.getTeamByName(player.getTeamName()).get().getCommission()));
+        player.setTransferCost((player.getTeam() == null) ? 0 : calculateTransferCost(player));
         return player;
     }
 
@@ -111,7 +116,7 @@ public class PlayerService {
     public List<Player> getTeamPlayers(Long id) throws TeamNotFoundException {
         Team team = teamRepo.getTeamById(id).orElseThrow(() -> new TeamNotFoundException("Team not found"));
         List<Player> players = playerRepo.getPlayersByTeamName(team.getName());
-        players.forEach(p -> p.setTransferCost(calculateTransferCost(p, team.getCommission())));
+        players.forEach(p -> p.setTransferCost(calculateTransferCost(p)));      //not needed
         return players;
     }
 }

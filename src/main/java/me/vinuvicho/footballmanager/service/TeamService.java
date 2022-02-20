@@ -37,15 +37,20 @@ public class TeamService {
         return teamRepo.save(team);
     }
 
+    @SuppressWarnings("UnnecessaryLocalVariable")
     public Team findTeamByName(String name) throws TeamNotFoundException {
-        return teamRepo.getTeamByName(name).orElseThrow(() -> new TeamNotFoundException("No Team found"));
+        try {
+            Team team = teamRepo.getTeamById(Long.valueOf(name)).orElseThrow();
+            return team;
+        } catch (Exception ignored) {}
+        Team team = teamRepo.getTeamByName(name).orElseThrow(() -> new TeamNotFoundException("No Team found"));
+        return team;
     }
 
-    @SuppressWarnings("StringOperationCanBeSimplified")
     public void deleteTeam(Long id) throws TeamNotFoundException {
         Team team = teamRepo.getTeamById(id).orElseThrow(() -> new TeamNotFoundException("team doesnt exist"));
         List<Player> players = team.getPlayers();
-        for (Player p: players) p.setTeamName(new String());
+        for (Player p: players) p.setTeam(null);
         playerRepo.saveAll(players);
         teamRepo.deleteById(id);
     }
