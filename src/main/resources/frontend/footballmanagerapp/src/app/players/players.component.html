@@ -1,0 +1,17 @@
+<h1>All players:</h1>
+<div *ngFor="let player of players">
+  <hr>
+  <a [routerLink]="['/player', player.id]">
+    <h4>{{player.playerName + ' ' + player.surname}}</h4>
+    <div *ngIf="player.photoUrl!=null && player.photoUrl!=''">
+      <img style="max-width:300px;max-height: 200px" src="{{player.photoUrl}}" alt="ProfilePhoto">
+    </div>
+    <p>{{'Started career in ' + player.careerStarted}}</p>
+  </a>
+  <div *ngIf="player?.teamName!=null">
+    <p>Is a part of <a href="{{'/team/' + player?.teamName}}">{{player?.teamName}}</a> team</p>
+  </div>
+  <div *ngIf="player?.teamName==null">
+    <p>Player has no team</p>
+  </div>
+</div>

@@ -1,0 +1,126 @@
+<!-- nav -->
+<!--suppress ALL -->
+<nav class="navbar navbar-expand navbar-dark bg-dark" id="main-container">
+  <div class="navbar-nav">
+    <a class="nav-item nav-link" routerLink="/">Teams</a>
+    <a class="nav-item nav-link" routerLink="/players">Players</a>
+    <a class="nav-item nav-link" href="" data-toggle="modal" data-target="#exampleModal">New Team</a>
+    <a class="nav-item nav-link" href="" data-toggle="modal" data-target="#playerModal">New Player</a>
+  </div>
+</nav>
+
+<!-- main content container -->
+<div class="jumbotron">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 offset-sm-2">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal New Team-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New team</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #addForm="ngForm" (ngSubmit)="createNewTeam(addForm)">
+          <div class="form-group">
+            <label for="name">Team name:</label>
+            <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Name" required>
+          </div>
+          <div class="form-group">
+            <label for="logo">LogoUrl:</label>
+            <input type="text" ngModel name="logo" class="form-control" id="logo" placeholder="Logo">
+          </div>
+          <div class="form-group">
+            <label for="city">City:</label>
+            <input type="text" ngModel name="city" class="form-control" id="city" placeholder="City" required>
+          </div>
+          <div class="form-group">
+            <label for="country">Country:</label>
+            <input type="text" ngModel name="country" class="form-control" id="country" placeholder="Country" required>
+          </div>
+          <div class="form-group">
+            <label for="about">About team:</label>
+            <input type="text" ngModel name="about" class="form-control" id="about" placeholder="About team" required>
+          </div>
+          <div class="form-group">
+            <label for="money">Team starting money:</label>
+            <input type="number" ngModel name="money" class="form-control" id="money" placeholder="Team money" required>
+          </div>
+          <div class="form-group">
+            <label for="commission">Team commission rate (0-10):</label>
+            <input type="number" ngModel name="commission" class="form-control" id="commission" placeholder="Commission"
+                   required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="add-employee-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="addForm.invalid" id="saveTeamButton" type="submit" class="btn btn-primary">Save team</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal New Player-->
+<div class="modal fade" id="playerModal" tabindex="-1" aria-labelledby="playerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="playerModalLabel">New team</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #newForm="ngForm" (ngSubmit)="createNewPlayer(newForm)">
+          <div class="form-group">
+            <label for="playerName">Player name:</label>
+            <input type="text" ngModel name="playerName" class="form-control" id="playerName" placeholder="Name"
+                   required>
+          </div>
+          <div class="form-group">
+            <label for="surname">Player surname:</label>
+            <input type="text" ngModel name="surname" class="form-control" id="surname" placeholder="Surname" required>
+          </div>
+          <div class="form-group">
+            <label for="photoUrl">Player photoUrl:</label>
+            <input type="text" ngModel name="photoUrl" class="form-control" id="photoUrl" placeholder="Photo link here">
+          </div>
+          <div class="form-group">
+            <label for="birthDate">Date of birth:</label>
+            <input type="text" ngModel name="birthDate" class="form-control" id="birthDate"
+                   placeholder="2001-07-26 (example)" required>
+          </div>
+          <div class="form-group">
+            <label for="careerStarted">Career started:</label>
+            <input type="text" ngModel name="careerStarted" class="form-control" id="careerStarted"
+                   placeholder="2020-02-21 (example)" required>
+          </div>
+          <div class="form-group">
+            <label for="teamName">Name of the team (if exist):</label>
+            <input type="text" ngModel name="teamName" class="form-control" id="teamName" placeholder="Team name">
+          </div>
+          <div class="form-group">
+            <label for="bio">About player:</label>
+            <input type="text" ngModel name="bio" class="form-control" id="bio" placeholder="Something about player"
+                   required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="add-player-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button [disabled]="newForm.invalid" id="savePlayerButton" type="submit" class="btn btn-primary">Save player</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

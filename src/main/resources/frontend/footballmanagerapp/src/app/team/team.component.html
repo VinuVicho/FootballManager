@@ -1,0 +1,122 @@
+<h1>{{team?.name}}</h1>
+<div *ngIf="team?.logo!=null && team?.logo!=''">
+  <img style="max-width:300px;max-height: 200px" src="{{team?.logo}}" alt="ProfilePhoto">
+</div>
+<p>{{'Location: ' + team?.city + ', ' + team?.country}}</p>
+<p>{{'About team: ' + team?.about}}</p>
+<p>{{'Team money: ' + team?.money}}</p>
+<div *ngIf="team?.commission == 0">
+  <p>Team doesn't take any commission</p>
+</div>
+<div *ngIf="team?.commission != 0">
+  <p>{{'Team commission: ' + team?.commission}}%</p>
+</div>
+
+<a class="nav-item nav-link" href="" data-toggle="modal" data-target="#updateTeamModal">
+  <button class="btn btn-primary" data-dismiss="modal">Update</button>
+</a>
+<a class="nav-item nav-link" href="" data-toggle="modal" data-target="#deletePlayerModal">
+  <button class="btn btn-danger" data-dismiss="modal">Delete</button>
+</a>
+<br>
+
+<div *ngIf="team?.players?.length == 0">
+  <p>Team doesn't have any player</p>
+</div>
+<div *ngIf="team?.players?.length != 0">
+  <h4>{{'Team has ' + team?.players?.length + ' players:'}}</h4>
+</div>
+
+<div *ngFor="let player of team?.players">
+  <hr>
+  <a [routerLink]="['/player', player.id]">
+    <h4>{{player.playerName + ' ' + player.surname}}</h4>
+    <div *ngIf="player.photoUrl!=null && player.photoUrl!=''">
+      <img style="max-width:300px;max-height: 200px" src="{{player.photoUrl}}" alt="ProfilePhoto">
+    </div>
+    <p>{{'Started career in ' + player.careerStarted}}</p>
+  </a>
+</div>
+
+
+<div class="modal fade" id="deletePlayerModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModelLabel">Delete Team</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete team {{team?.name}}?</p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <button (click)="onDeleteTeam()" class="btn btn-danger" data-dismiss="modal">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="updateTeamModal" tabindex="-1" role="dialog" aria-labelledby="teamEditModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateTeamModalLabel">Edit Team {{team?.name}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #editForm="ngForm">
+          <div class="form-group">
+            <label for="name">Team name:</label>
+            <input type="text" ngModel="{{team?.name}}" name="name" class="form-control" id="name"
+                   aria-describedby="emailHelp" placeholder="Player Name" required>
+          </div>
+          <input type="hidden" ngModel="{{team?.id}}" name="id" class="form-control" id="id" placeholder="Email">
+          <div class="form-group">
+            <label for="logo">Team logoUrl:</label>
+            <input type="text" ngModel="{{team?.logo}}" name="logo" class="form-control" id="logo"
+                   placeholder="LogoUrl" required>
+          </div>
+          <div class="form-group">
+            <label for="city">Team presents city:</label>
+            <input type="text" ngModel="{{team?.city}}" name="city" class="form-control" id="city"
+                   placeholder="Team city">
+          </div>
+          <div class="form-group">
+            <label for="country">Team country:</label>
+            <input type="text" ngModel="{{team?.country}}" name="country" class="form-control" id="country"
+                   placeholder="Team country" required>
+          </div>
+          <div class="form-group">
+            <label for="about">About team:</label>
+            <input type="text" ngModel="{{team?.about}}" name="about" class="form-control"
+                   id="about" placeholder="Some text about team" required>
+          </div>
+          <div class="form-group">
+            <label for="money">Team capital:</label>
+            <input type="number" ngModel="{{team?.money}}" class="form-control" id="money" name="money"
+                   placeholder="Team capital">
+          </div>
+          <div class="form-group">
+            <label for="commission">Team commission:</label>
+            <input type="number" ngModel="{{team?.commission}}" name="commission" class="form-control" id="commission"
+                   placeholder="Team commission" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+            <button [disabled]="editForm.invalid" (click)="onUpdateTeam(editForm.value)" data-dismiss="modal"
+                    class="btn btn-primary">Save changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
