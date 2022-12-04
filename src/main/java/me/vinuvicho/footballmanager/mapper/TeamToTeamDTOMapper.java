@@ -1,9 +1,7 @@
 package me.vinuvicho.footballmanager.mapper;
 
 import lombok.AllArgsConstructor;
-import me.vinuvicho.footballmanager.dto.PlayerDTO;
 import me.vinuvicho.footballmanager.dto.TeamDTO;
-import me.vinuvicho.footballmanager.entity.Player;
 import me.vinuvicho.footballmanager.entity.Team;
 import me.vinuvicho.footballmanager.exeption.TeamNotFoundException;
 import me.vinuvicho.footballmanager.repository.TeamRepo;

@@ -3,6 +3,7 @@ package me.vinuvicho.footballmanager.service;
 import lombok.AllArgsConstructor;
 import me.vinuvicho.footballmanager.entity.Player;
 import me.vinuvicho.footballmanager.entity.Team;
+import me.vinuvicho.footballmanager.exeption.PlayerNotFoundException;
 import me.vinuvicho.footballmanager.exeption.PlayerValidationFailed;
 import me.vinuvicho.footballmanager.exeption.TeamNotFoundException;
 import me.vinuvicho.footballmanager.exeption.TooPoorTeam;
@@ -46,8 +47,7 @@ public class PlayerService {
             playerRepo.deletePlayerFromAnyTeam(player.getId());
             return playerRepo.save(player);
         }
-        if (databasePlayer.getTeam() != null
-                && Objects.equals(databasePlayer.getTeam().getName(), player.getTeam().getName())) {    //team not changed
+        if (Objects.equals(databasePlayer.getTeam().getName(), player.getTeam().getName())) {           //team not changed
             return playerRepo.save(player);
         }
         Team transferTo = player.getTeam();
@@ -87,8 +87,8 @@ public class PlayerService {
         return transferCost + transferCost / 100 * player.getTeam().getCommission();
     }
 
-    public Player findPlayerById(Long id) throws PlayerValidationFailed {
-        Player player = playerRepo.findById(id).orElseThrow(() -> new PlayerValidationFailed("No Player found"));
+    public Player findPlayerById(Long id) throws PlayerNotFoundException {
+        Player player = playerRepo.findById(id).orElseThrow(() -> new PlayerNotFoundException("No Player found"));
         player.setTransferCost((player.getTeam() == null) ? 0 : calculateTransferCost(player));
         return player;
     }
@@ -100,7 +100,6 @@ public class PlayerService {
 
     public List<Player> getTeamPlayers(Long id) throws TeamNotFoundException {
         Team team = teamRepo.getTeamById(id).orElseThrow(() -> new TeamNotFoundException("Team not found"));
-        List<Player> players = playerRepo.getPlayersByTeamName(team.getName());
-        return players;
+        return team.getPlayers();
     }
 }

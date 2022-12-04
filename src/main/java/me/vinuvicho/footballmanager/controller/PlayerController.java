@@ -2,6 +2,7 @@ package me.vinuvicho.footballmanager.controller;
 
 import lombok.AllArgsConstructor;
 import me.vinuvicho.footballmanager.dto.PlayerDTO;
+import me.vinuvicho.footballmanager.exeption.PlayerNotFoundException;
 import me.vinuvicho.footballmanager.exeption.PlayerValidationFailed;
 import me.vinuvicho.footballmanager.exeption.TeamNotFoundException;
 import me.vinuvicho.footballmanager.exeption.TooPoorTeam;
@@ -35,7 +36,7 @@ public class PlayerController {
         try {
             PlayerDTO player = new PlayerDTO(playerService.findPlayerById(id));
             return new ResponseEntity<>(player, HttpStatus.OK);
-        } catch (PlayerValidationFailed e) {
+        } catch (PlayerNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

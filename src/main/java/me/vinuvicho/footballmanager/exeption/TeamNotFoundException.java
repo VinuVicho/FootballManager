@@ -1,11 +1,8 @@
 package me.vinuvicho.footballmanager.exeption;
 
-import org.springframework.data.crossstore.ChangeSetPersister;
-
-public class TeamNotFoundException extends ChangeSetPersister.NotFoundException {
+public class TeamNotFoundException extends RuntimeException {
 
     public TeamNotFoundException(String e) {
-        System.out.println(e);
+        super(e);
     }
-
 }

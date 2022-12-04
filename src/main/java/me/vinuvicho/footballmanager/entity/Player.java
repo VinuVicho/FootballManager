@@ -1,6 +1,9 @@
 package me.vinuvicho.footballmanager.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -39,10 +42,5 @@ public class Player implements Serializable {
     private Long transferCost;
 
     public Player() {
-    }
-
-    public Player(String playerName, String surname) {      //For tests
-        this.playerName = playerName;
-        this.surname = surname;
     }
 }
